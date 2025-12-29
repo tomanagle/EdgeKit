@@ -1,0 +1,6 @@
+BACKEND_URL=http://localhost:8787
+FRONTEND_URL=http://localhost:5173
+BETTER_AUTH_URL=http://localhost:8787
+
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=

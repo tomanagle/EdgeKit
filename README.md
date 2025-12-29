@@ -59,6 +59,7 @@ bun run db:migrate
 ```
 
 **Configure environment variables in `worker/wrangler.toml`:**
+Update the environment variables in the `worker/wrangler.toml` file.
 ```toml
 [vars]
 BACKEND_URL = "http://localhost:8787"
@@ -66,6 +67,8 @@ FRONTEND_URL = "http://localhost:5173"
 BETTER_AUTH_URL = "http://localhost:8787"
 GITHUB_CLIENT_ID = "your-github-client-id" # Optional
 ```
+You can copy use the .dev.vars.template file to store local variables and secrets.
+
 
 **Add secrets (don't commit these):**
 ```bash
@@ -74,9 +77,7 @@ wrangler secret put BETTER_AUTH_SECRET
 wrangler secret put GITHUB_CLIENT_SECRET # If using GitHub OAuth
 ```
 
-### Development
-
-Run both frontend and backend in development mode:
+**Run both frontend and backend in development mode:**
 
 ```bash
 # Terminal 1 - Backend
