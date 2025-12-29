@@ -1,0 +1,31 @@
+name = "edgekit"
+main = "src/main.ts"
+compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2025-06-01"
+
+[build]
+command = "bun run build"
+watch_dir = "/worker"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "edgekit-db"
+database_id = "your-database-id-here"
+
+[[r2_buckets]]
+binding = 'BUCKET'
+bucket_name = 'edgekit-bucket'
+
+[[kv_namespaces]]
+binding = "SESSION_CACHE"
+id = "session-cache"
+
+[dev]
+port = 8787
+
+[vars]
+BACKEND_URL = ""
+FRONTEND_URL = ""
+GITHUB_CLIENT_ID = ""
+BETTER_AUTH_URL = ""

@@ -1,0 +1,22 @@
+{
+    "name": "edgekit",
+    "private": true,
+    "workspaces": ["frontend", "worker"],
+    "scripts": {
+        "generate": "cd worker && bun run generate",
+        "frontend:dev": "cd frontend && bun run dev",
+        "frontend:build": "cd frontend && bun run build",
+        "worker:dev": "cd worker && bun run dev",
+        "worker:build": "cd worker && bun run build",
+        "worker:deploy": "cd worker && bun run deploy",
+        "db:migrate": "cd worker && bun run db:migrate:local",
+        "db:migrate:prod": "cd worker && bun run db:migrate:prod",
+        "db:studio": "cd worker && bun run db:studio",
+        "lint": "bun run lint",
+        "lint:fix": "bun run lint:fix",
+        "setup": "bun run setup.ts"
+    },
+    "dependencies": {
+        "wrangler": "^4.56.0"
+    }
+}

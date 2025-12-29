@@ -1,0 +1,64 @@
+@import "tailwindcss";
+@import "@daveyplate/better-auth-ui/css";
+
+@theme {
+  --radius: 0.65rem;
+
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(20 14.3% 4.1%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(20 14.3% 4.1%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(20 14.3% 4.1%);
+  --color-primary: hsl(24.6 95% 53.1%);
+  --color-primary-foreground: hsl(60 9.1% 97.8%);
+  --color-secondary: hsl(60 4.8% 95.9%);
+  --color-secondary-foreground: hsl(24 9.8% 10%);
+  --color-muted: hsl(60 4.8% 95.9%);
+  --color-muted-foreground: hsl(25 5.3% 44.7%);
+  --color-accent: hsl(60 4.8% 95.9%);
+  --color-accent-foreground: hsl(24 9.8% 10%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(60 9.1% 97.8%);
+  --color-border: hsl(20 5.9% 90%);
+  --color-input: hsl(20 5.9% 90%);
+  --color-ring: hsl(24.6 95% 53.1%);
+  --color-chart-1: hsl(12 76% 61%);
+  --color-chart-2: hsl(173 58% 39%);
+  --color-chart-3: hsl(197 37% 24%);
+  --color-chart-4: hsl(43 74% 66%);
+  --color-chart-5: hsl(27 87% 67%);
+}
+
+.dark {
+  --color-background: hsl(20 14.3% 4.1%);
+  --color-foreground: hsl(60 9.1% 97.8%);
+  --color-card: hsl(20 14.3% 4.1%);
+  --color-card-foreground: hsl(60 9.1% 97.8%);
+  --color-popover: hsl(20 14.3% 4.1%);
+  --color-popover-foreground: hsl(60 9.1% 97.8%);
+  --color-primary: hsl(20.5 90.2% 48.2%);
+  --color-primary-foreground: hsl(60 9.1% 97.8%);
+  --color-secondary: hsl(12 6.5% 15.1%);
+  --color-secondary-foreground: hsl(60 9.1% 97.8%);
+  --color-muted: hsl(12 6.5% 15.1%);
+  --color-muted-foreground: hsl(24 5.4% 63.9%);
+  --color-accent: hsl(12 6.5% 15.1%);
+  --color-accent-foreground: hsl(60 9.1% 97.8%);
+  --color-destructive: hsl(0 72.2% 50.6%);
+  --color-destructive-foreground: hsl(60 9.1% 97.8%);
+  --color-border: hsl(12 6.5% 15.1%);
+  --color-input: hsl(12 6.5% 15.1%);
+  --color-ring: hsl(20.5 90.2% 48.2%);
+  --color-chart-1: hsl(220 70% 50%);
+  --color-chart-2: hsl(160 60% 45%);
+  --color-chart-3: hsl(30 80% 55%);
+  --color-chart-4: hsl(280 65% 60%);
+  --color-chart-5: hsl(340 75% 55%);
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+}
+
