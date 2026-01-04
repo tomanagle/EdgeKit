@@ -1,3 +1,5 @@
+import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import { LogOut, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
@@ -8,8 +10,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
-import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
-import { LogOut, User } from "lucide-react";
 
 export function Navbar() {
 	const { session } = useRouteContext({ from: "__root__" });

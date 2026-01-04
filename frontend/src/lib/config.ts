@@ -1,5 +1,6 @@
-export const VITE_API_BASE_URL =
+export const VITE_API_BASE_URL: string =
 	import.meta.env.VITE_API_BASE_URL ?? window.location.origin;
+
 export const VITE_FRONTEND_URL =
 	import.meta.env.VITE_FRONTEND_URL ?? window.location.origin;
 

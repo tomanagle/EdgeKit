@@ -1,14 +1,26 @@
+import type { env as Env } from "cloudflare:workers";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import type { Database } from "./db";
-import type { Env } from "./env";
+import type { Logger } from "./logger";
 
 const fakeSecret = "Nxcdjj9z+5sM1W9RNya+JttX5tOw30Eb+GUMkXADXWc";
 
-export function createAuth(props: { db?: Database; env?: Env }) {
+export function createAuth(props: {
+	db?: Database;
+	env?: Env;
+	logger?: Logger;
+}) {
 	return betterAuth({
 		database: drizzleAdapter(props.db ?? ({} as Database), {
 			provider: "sqlite",
+		}),
+		...(props.logger && {
+			logger: {
+				log: (level, message, ...args) => {
+					props.logger?.[level](message, ...args);
+				},
+			},
 		}),
 		secret: props.env?.BETTER_AUTH_SECRET || fakeSecret,
 		baseURL: props.env?.FRONTEND_URL,

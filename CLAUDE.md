@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Cloudflare Workers Project
 
-This project uses Cloudflare Workers with Elysia framework.
+This project uses Cloudflare Workers with Hono framework.
 
 ## Package Manager
 
@@ -28,15 +28,16 @@ This runs `wrangler dev` which starts the local Cloudflare Workers development s
 
 ## Framework
 
-Use Elysia for building the worker:
+Use Hono for building the worker:
 
 ```ts#src/main.ts
-import { Elysia } from 'elysia'
+import { Hono } from 'hono'
 
-const app = new Elysia()
-  .get('/', () => 'Hello Cloudflare Workers!')
-  .get('/api/users/:id', ({ params: { id } }) => {
-    return { id }
+const app = new Hono()
+  .get('/', (c) => c.text('Hello Cloudflare Workers!'))
+  .get('/api/users/:id', (c) => {
+    const id = c.req.param('id')
+    return c.json({ id })
   })
 
 export default app
@@ -87,6 +88,7 @@ export const users = sqliteTable('users', {
 Access D1 through Drizzle in your routes:
 
 ```ts
+import { Hono } from 'hono'
 import { drizzle } from 'drizzle-orm/d1'
 import { users } from './db/schema'
 
@@ -94,11 +96,12 @@ type Env = {
   DB: D1Database
 }
 
-app.get('/api/users', async ({ request }) => {
-  const env = (request as any).env as Env
-  const db = drizzle(env.DB)
+const app = new Hono<{ Bindings: Env }>()
+
+app.get('/api/users', async (c) => {
+  const db = drizzle(c.env.DB)
   const allUsers = await db.select().from(users)
-  return allUsers
+  return c.json(allUsers)
 })
 ```
 
@@ -132,14 +135,13 @@ bun run db:migrate
 
 ## Bindings
 
-D1 and other Cloudflare bindings are configured in `wrangler.toml` and accessed via the request context:
+D1 and other Cloudflare bindings are configured in `wrangler.toml` and accessed via `c.env`:
 
 ```ts
-app.get('/data', async ({ request }) => {
-  const env = (request as any).env
-  const db = env.DB // D1 database
-  const bucket = env.BUCKET // R2 bucket
-  return { message: 'OK' }
+app.get('/data', async (c) => {
+  const db = c.env.DB // D1 database
+  const bucket = c.env.BUCKET // R2 bucket
+  return c.json({ message: 'OK' })
 })
 ```
 
@@ -159,19 +161,26 @@ Better Auth provides built-in routes at `/api/auth/*`:
 
 ### Protected Routes
 
-Use `getSession` to protect routes:
+Create middleware to protect routes:
 
 ```ts
-app.get('/api/me', async ({ request }) => {
-  const env = (request as any).env as Env
-  const auth = createAuth(env.DB, env)
-  const session = await auth.api.getSession({ headers: request.headers })
+import { createMiddleware } from 'hono/factory'
+
+const authMiddleware = createMiddleware(async (c, next) => {
+  const auth = createAuth({ db: c.get('db'), env: c.env })
+  const session = await auth.api.getSession({ headers: c.req.raw.headers })
 
   if (!session) {
-    return new Response('Unauthorized', { status: 401 })
+    return c.json({ error: 'Unauthorized' }, 401)
   }
 
-  return { user: session.user }
+  c.set('user', session.user)
+  await next()
+})
+
+app.get('/api/me', authMiddleware, async (c) => {
+  const user = c.get('user')
+  return c.json({ user })
 })
 ```
 
@@ -200,4 +209,27 @@ bun run db:generate
 bun run db:migrate
 ```
 
-For more information, see [Cloudflare Workers docs](https://developers.cloudflare.com/workers/), [Elysia docs](https://elysiajs.com/), [Drizzle docs](https://orm.drizzle.team/), and [Better Auth docs](https://www.better-auth.com/).
+## Validation with Zod
+
+Use Zod for request validation with Hono:
+
+```ts
+import { zValidator } from '@hono/zod-validator'
+import { z } from 'zod'
+
+const createUserSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+})
+
+app.post('/api/users',
+  zValidator('json', createUserSchema),
+  async (c) => {
+    const body = c.req.valid('json')
+    // body is typed as { name: string; email: string }
+    return c.json({ success: true })
+  }
+)
+```
+
+For more information, see [Cloudflare Workers docs](https://developers.cloudflare.com/workers/), [Hono docs](https://hono.dev/), [Drizzle docs](https://orm.drizzle.team/), and [Better Auth docs](https://www.better-auth.com/).

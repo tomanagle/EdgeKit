@@ -49,7 +49,6 @@ export function Providers({ children }: { children: ReactNode }) {
 					replace={(href) => router?.navigate({ href, replace: true })}
 					Link={({ href, ...props }) => <Link to={href} {...props} />}
 					social={{ providers: ["github"] }}
-					onSessionChange={() => router.invalidate()}
 				>
 					{children}
 				</AuthUIProvider>

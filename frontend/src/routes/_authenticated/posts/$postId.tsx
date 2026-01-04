@@ -1,16 +1,28 @@
-import { getPost } from "@/lib/api";
-import { queryClient } from "@/lib/query-client";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeftIcon } from "lucide-react";
+import { getPost } from "@/lib/api";
+import { queryClient } from "@/lib/query-client";
 
 export const Route = createFileRoute("/_authenticated/posts/$postId")({
 	component: RouteComponent,
 	beforeLoad: async ({ params: { postId } }) => {
-		const { data } = await queryClient.ensureQueryData({
+		const data = await queryClient.ensureQueryData({
 			queryKey: ["posts", postId],
 			queryFn: () => getPost(postId),
 		});
 		return { post: data };
+	},
+	loader({ context }) {
+		return { post: context.post };
+	},
+	head: ({ loaderData }) => {
+		return {
+			meta: [
+				{
+					title: loaderData?.post?.title,
+				},
+			],
+		};
 	},
 });
 

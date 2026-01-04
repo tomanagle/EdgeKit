@@ -11,7 +11,8 @@
 			"frontend/**/*.{ts,tsx}",
 			"worker/**/*.ts",
 			"setup.ts",
-			"!worker/worker-configuration.d.ts"
+			"!worker/worker-configuration.d.ts",
+			"!*/**/*.gen.ts"
 		]
 	},
 	"formatter": {

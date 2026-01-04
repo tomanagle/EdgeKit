@@ -53,9 +53,7 @@ bun install
 
 **Generate and apply database migrations:**
 ```bash
-cd worker
-bun run db:generate
-bun run db:migrate
+bun run generate
 ```
 
 **Configure environment variables in `worker/wrangler.toml`:**
@@ -65,6 +63,7 @@ Update the environment variables in the `worker/wrangler.toml` file.
 BACKEND_URL = "http://localhost:8787"
 FRONTEND_URL = "http://localhost:5173"
 BETTER_AUTH_URL = "http://localhost:8787"
+BETTER_AUTH_SECRET = "your-better-auth-secret"
 GITHUB_CLIENT_ID = "your-github-client-id" # Optional
 ```
 You can copy use the .dev.vars.template file to store local variables and secrets.
@@ -81,12 +80,10 @@ wrangler secret put GITHUB_CLIENT_SECRET # If using GitHub OAuth
 
 ```bash
 # Terminal 1 - Backend
-cd worker
-bun run dev
+bun run worker:dev
 
 # Terminal 2 - Frontend
-cd frontend
-bun run dev
+bun run frontend:dev
 ```
 
 - Backend runs on http://localhost:8787
@@ -97,7 +94,7 @@ bun run dev
 ### Backend (Cloudflare Worker)
 
 - **[Cloudflare Workers](https://workers.cloudflare.com/)** - Serverless execution environment
-- **[Elysia](https://elysiajs.com/)** - Type-safe web framework
+- **[Hono](https://hono.dev/)** - Ultrafast web framework for the edge
 - **[Drizzle ORM](https://orm.drizzle.team/)** - TypeScript ORM
 - **[Cloudflare D1](https://developers.cloudflare.com/d1/)** - Serverless SQLite database
 - **[Cloudflare R2](https://developers.cloudflare.com/r2/)** - Object storage
@@ -114,7 +111,7 @@ bun run dev
 - **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first CSS
 - **[Radix UI](https://www.radix-ui.com/)** - UI primitives
 - **[shadcn/ui](https://ui.shadcn.com/)** - Component collection
-- **[Eden](https://elysiajs.com/eden/overview.html)** - End-to-end type safety
+- **[Hono RPC](https://hono.dev/docs/guides/rpc)** - End-to-end type safety
 
 ### Development Tools
 
@@ -131,8 +128,17 @@ edgekit/
 │   ├── src/
 │   │   ├── auth.ts      # Better Auth configuration
 │   │   ├── main.ts      # Main application entry
+│   │   ├── middleware.ts # Auth and other middleware
+│   │   ├── types.ts     # Shared types
 │   │   ├── db/          # Database schema and connection
 │   │   ├── modules/     # Feature modules (posts, upload, etc.)
+│   │   │   ├── posts/
+│   │   │   │   ├── posts.router.ts   # Posts routes
+│   │   │   │   ├── posts.service.ts  # Business logic
+│   │   │   │   └── posts.schema.ts   # Validation schemas
+│   │   │   └── upload/
+│   │   │       ├── upload.router.ts  # Upload routes
+│   │   │       └── upload.service.ts # Upload logic
 │   │   └── logger.ts    # Logging configuration
 │   ├── migrations/      # Database migrations
 │   └── wrangler.toml    # Cloudflare Workers config

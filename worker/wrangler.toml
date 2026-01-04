@@ -2,6 +2,7 @@ name = "edgekit"
 main = "src/main.ts"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2025-06-01"
+account_id = "your-account-id-here"
 
 # D1 Database binding
 [[d1_databases]]

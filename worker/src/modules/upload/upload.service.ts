@@ -40,7 +40,7 @@ export async function getFile({
 	env,
 }: {
 	key: string;
-	env: Env;
+	env: typeof Env;
 }): Promise<Response | null> {
 	const object = await env.BUCKET.get(key);
 

@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -8,8 +10,6 @@ import {
 } from "@/components/ui/card";
 import { getPost, getPosts } from "@/lib/api";
 import { queryClient } from "@/lib/query-client";
-import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
 export const Route = createFileRoute("/_authenticated/")({
 	component: RouteComponent,
 });
@@ -20,7 +20,7 @@ function RouteComponent() {
 		queryFn: getPosts,
 	});
 
-	const posts = postsData?.data?.items ?? [];
+	const posts = postsData?.items ?? [];
 
 	function prefetchPost(postId: string) {
 		queryClient.prefetchQuery({

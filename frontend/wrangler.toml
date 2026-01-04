@@ -1,6 +1,7 @@
 name = "edgekit-frontend"
 pages_build_output_dir = "./dist"
 compatibility_date = "2024-10-01"
+account_id = "your-account-id-here"
 
 [vars]
 BACKEND_URL = "https://your-application.com"

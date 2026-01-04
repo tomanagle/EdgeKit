@@ -1,27 +1,39 @@
-import { treaty } from "@elysiajs/eden";
-import type { App } from "../../../worker/src/main.ts";
+import { hc } from "hono/client";
+import type { AppRoutes } from "../../../worker/src/main";
 import { VITE_API_BASE_URL } from "./config";
 
-const { api } = treaty<App>(VITE_API_BASE_URL, {
-	fetch: {
+export const client = hc<AppRoutes>(VITE_API_BASE_URL, {
+	init: {
 		credentials: "include",
 	},
 });
 
-export function createPost(post: Parameters<(typeof api.posts)["post"]>[0]) {
-	return api.posts.post(post);
+export function createPost(body: {
+	title: string;
+	body: string;
+	image?: string;
+}) {
+	return client.api.posts.$post({ json: body });
 }
 
-export function getPosts() {
-	return api.posts.get();
+export async function getPosts() {
+	const result = await client.api.posts.$get();
+
+	if (!result.ok) {
+		throw new Error("Failed to get posts");
+	}
+	return result.json();
 }
 
-export function getPost(postId: string) {
-	return api
-		.posts({
-			postId,
-		})
-		.get();
+export async function getPost(postId: string) {
+	const result = await client.api.posts[":postId"].$get({
+		param: { postId },
+	});
+
+	if (!result.ok) {
+		throw new Error("Failed to get post");
+	}
+	return result.json();
 }
 
 export async function uploadFile(file: File) {

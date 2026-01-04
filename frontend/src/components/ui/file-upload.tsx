@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import * as React from "react";
+import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { Input } from "./input";
 
@@ -11,7 +11,7 @@ export interface FileUploadProps
 }
 
 const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
-	({ className, onFileChange, previewUrl, onRemove, ...props }, ref) => {
+	({ className, onFileChange, previewUrl, onRemove, ...props }) => {
 		const [preview, setPreview] = React.useState<string | null>(
 			previewUrl || null,
 		);

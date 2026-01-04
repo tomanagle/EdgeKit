@@ -1,13 +1,14 @@
-import { ENABLE_QUERY_DEVTOOLS, ENABLE_ROUTER_DEVTOOLS } from "@/lib/config";
-import { queryClient } from "@/lib/query-client";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
 	createRootRouteWithContext,
+	HeadContent,
 	Outlet,
 	redirect,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import type { Session, User } from "better-auth";
+import { ENABLE_QUERY_DEVTOOLS, ENABLE_ROUTER_DEVTOOLS } from "@/lib/config";
+import { queryClient } from "@/lib/query-client";
 import { authClient } from "../lib/auth-client";
 
 interface RouterContext {
@@ -73,6 +74,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootComponent() {
 	return (
 		<>
+			<HeadContent />
 			<Outlet />
 			{ENABLE_QUERY_DEVTOOLS && <ReactQueryDevtools initialIsOpen={false} />}
 			{ENABLE_ROUTER_DEVTOOLS && <TanStackRouterDevtools />}
