@@ -3,10 +3,6 @@ main = "src/main.ts"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2025-06-01"
 
-[build]
-command = "bun run build"
-watch_dir = "/worker"
-
 # D1 Database binding
 [[d1_databases]]
 binding = "DB"

@@ -3,7 +3,6 @@ import { CloudflareAdapter } from "elysia/adapter/cloudflare-worker";
 import type pino from "pino";
 import { type Auth, createAuth } from "./auth";
 import { type Database, getDb } from "./db";
-import type { Env } from "./env";
 import { createRequestLogger, loggerPlugin } from "./logger";
 import {
 	createPostBodySchema,

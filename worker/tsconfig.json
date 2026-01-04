@@ -1,8 +1,9 @@
 {
 	"compilerOptions": {
 		// Environment setup & latest features
-		"lib": ["ESNext"],
-		"types": ["@cloudflare/workers-types"],
+		"lib": [
+			"ESNext"
+		],
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleDetection": "force",

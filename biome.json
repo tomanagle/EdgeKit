@@ -7,7 +7,12 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["frontend/**/*.{ts,tsx}", "worker/**/*.ts", "setup.ts"]
+		"includes": [
+			"frontend/**/*.{ts,tsx}",
+			"worker/**/*.ts",
+			"setup.ts",
+			"!worker/worker-configuration.d.ts"
+		]
 	},
 	"formatter": {
 		"enabled": true,

@@ -1,15 +1,11 @@
-import type { Env } from "../../env";
-
 export async function uploadFile({
 	file,
 	userId,
 	env,
-	requestUrl,
 }: {
 	file: File;
 	userId: string;
 	env: Env;
-	requestUrl?: string;
 }): Promise<{ key: string; publicUrl: string }> {
 	// Generate a unique key for the file
 	const extension = file.name.split(".").pop() || "";
