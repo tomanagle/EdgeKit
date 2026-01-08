@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import type pino from "pino";
 import { type Auth, createAuth } from "./auth";
-import { type Database, getDb } from "./db";
 import { createRequestLogger, requestLogger } from "./logger";
 import { createPostsRouter } from "./modules/posts/posts.router";
 import {
@@ -10,17 +9,14 @@ import {
 	createUploadRouter,
 } from "./modules/upload/upload.router";
 import type { HonoEnv } from "./types";
+import { env } from "cloudflare:workers";
 
 function createApp({
-	env,
 	logger,
 	auth,
-	db,
 }: {
-	env: Env;
 	logger: pino.Logger;
 	auth: Auth;
-	db: Database;
 }) {
 	const app = new Hono<HonoEnv>();
 
@@ -46,20 +42,19 @@ function createApp({
 
 	// Mount routers
 	const routes = app
-		.route("/api/posts", createPostsRouter({ auth, db }))
-		.route("/api/upload", createUploadRouter({ auth, env }))
-		.route("/api/files", createFilesRouter({ env }));
+		.route("/api/posts", createPostsRouter({ auth }))
+		.route("/api/upload", createUploadRouter({ auth }))
+		.route("/api/files", createFilesRouter());
 
 	return { app, routes };
 }
 
 export default {
-	async fetch(request: Request, env: Env): Promise<Response> {
+	async fetch(request: Request, env: Cloudflare.Env): Promise<Response> {
 		const logger = createRequestLogger(request);
-		const db = getDb(env.DB);
-		const auth = createAuth({ db, env, logger });
+		const auth = createAuth({ logger });
 
-		const { app } = createApp({ env, logger, auth, db });
+		const { app } = createApp({ logger, auth });
 		return app.fetch(request, env);
 	},
 };

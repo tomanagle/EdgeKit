@@ -196,7 +196,7 @@ modules/
 
 ### Router Factory Pattern (Dependency Injection)
 ```typescript
-export function createPostsRouter({ auth, db }: { auth: Auth; db: Database }) {
+export function createPostsRouter({ auth }: { auth: Auth }) {
 	return new Hono<HonoEnv>()
 		.post("/", middleware, validator, handler)
 		.get("/", middleware, handler);
