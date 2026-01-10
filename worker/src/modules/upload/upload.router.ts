@@ -4,7 +4,7 @@ import { authMiddleware } from "../../middleware";
 import type { HonoEnv } from "../../types";
 import { getFile, uploadFile } from "./upload.service";
 
-export function createUploadRouter({ auth, env }: { auth: Auth; env: Env }) {
+export function createUploadRouter({ auth }: { auth: Auth }) {
 	return new Hono<HonoEnv>().post(
 		"/",
 		async (c, next) => authMiddleware(auth, c, next),
@@ -20,7 +20,6 @@ export function createUploadRouter({ auth, env }: { auth: Auth; env: Env }) {
 			const result = await uploadFile({
 				file,
 				userId: user.id,
-				env,
 			});
 
 			return c.json(result);
@@ -28,7 +27,7 @@ export function createUploadRouter({ auth, env }: { auth: Auth; env: Env }) {
 	);
 }
 
-export function createFilesRouter({ env }: { env: Env }) {
+export function createFilesRouter() {
 	return new Hono<HonoEnv>().get("/*", async (c) => {
 		const logger = c.get("logger");
 		const url = new URL(c.req.url);
@@ -49,7 +48,7 @@ export function createFilesRouter({ env }: { env: Env }) {
 
 		logger.info({ encodedKey, decodedKey }, "Fetching file from R2");
 
-		const file = await getFile({ key: decodedKey, env });
+		const file = await getFile({ key: decodedKey });
 		if (!file) {
 			logger.warn({ encodedKey, decodedKey }, "File not found in R2");
 			return c.text("Not Found", 404);

@@ -1,11 +1,11 @@
+import { env } from "cloudflare:workers";
+
 export async function uploadFile({
 	file,
 	userId,
-	env,
 }: {
 	file: File;
 	userId: string;
-	env: Env;
 }): Promise<{ key: string; publicUrl: string }> {
 	// Generate a unique key for the file
 	const extension = file.name.split(".").pop() || "";
@@ -35,13 +35,7 @@ export async function uploadFile({
 	};
 }
 
-export async function getFile({
-	key,
-	env,
-}: {
-	key: string;
-	env: typeof Env;
-}): Promise<Response | null> {
+export async function getFile({	key}: {	key: string }): Promise<Response | null> {
 	const object = await env.BUCKET.get(key);
 
 	if (!object) {
