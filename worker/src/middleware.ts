@@ -1,10 +1,10 @@
-import type { Context, Next } from "hono";
+import type { Next } from "hono";
 import type { Auth } from "./auth";
-import type { HonoEnv } from "./types";
+import type { Ctx } from "./types";
 
 export async function authMiddleware(
 	auth: Auth,
-	c: Context<HonoEnv>,
+	c: Ctx,
 	next: Next,
 ) {
 	const logger = c.get("logger");

@@ -1,17 +1,16 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import type { Auth } from "../../auth";
-import type { Database } from "../../db";
 import { authMiddleware } from "../../middleware";
 import type { HonoEnv } from "../../types";
 import { createPostBodySchema } from "./posts.schema";
 import {
-	createPostHandler,
-	getPostHandler,
-	getPostsHandler,
+  createPostHandler,
+  getPostHandler,
+  getPostsHandler,
 } from "./posts.service";
 
-export function createPostsRouter({ auth, db }: { auth: Auth; db: Database }) {
+export function createPostsRouter({ auth }: { auth: Auth }) {
 	return new Hono<HonoEnv>()
 		.post(
 			"/",
@@ -20,7 +19,7 @@ export function createPostsRouter({ auth, db }: { auth: Auth; db: Database }) {
 			async (c) => {
 				const body = c.req.valid("json");
 				const user = c.get("user");
-				const result = await createPostHandler({ body, userId: user.id }, db);
+				const result = await createPostHandler({ body, userId: user.id });
 				return c.json(result, 201);
 			},
 		)
@@ -28,7 +27,7 @@ export function createPostsRouter({ auth, db }: { auth: Auth; db: Database }) {
 			"/",
 			async (c, next) => authMiddleware(auth, c, next),
 			async (c) => {
-				const result = await getPostsHandler({ db });
+				const result = await getPostsHandler();
 				return c.json(result);
 			},
 		)
@@ -38,7 +37,7 @@ export function createPostsRouter({ auth, db }: { auth: Auth; db: Database }) {
 			async (c) => {
 				const postId = c.req.param("postId");
 				const user = c.get("user");
-				const result = await getPostHandler({ postId, userId: user.id }, db);
+				const result = await getPostHandler({ postId, userId: user.id });
 				return c.json(result);
 			},
 		);
