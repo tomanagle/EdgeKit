@@ -43,8 +43,7 @@ function RouteComponent() {
 					setIsUploading(true);
 					const uploadResult = await uploadFile(selectedFile);
 					finalImageUrl = uploadResult.publicUrl;
-				} catch (error) {
-					console.error("Failed to upload image:", error);
+				} catch {
 					// Continue with post creation even if image upload fails
 				} finally {
 					setIsUploading(false);
