@@ -1,21 +1,19 @@
 import { db } from "../../db";
 import { eventSchema, postsSchema } from "../../db/schema";
 import type {
-  CreatePostBody,
-  GetPostResponse,
-  GetPostsResponse,
-  PostResponse,
+	CreatePostBody,
+	GetPostResponse,
+	GetPostsResponse,
+	PostResponse,
 } from "./posts.schema";
 
-export async function createPostHandler(
-	{
-		body,
-		userId,
-	}: {
-		body: CreatePostBody;
-		userId: string;
-	}
-): Promise<PostResponse> {
+export async function createPostHandler({
+	body,
+	userId,
+}: {
+	body: CreatePostBody;
+	userId: string;
+}): Promise<PostResponse> {
 	const id = crypto.randomUUID();
 	await db.batch([
 		db
@@ -92,15 +90,13 @@ export async function getPostsHandler(): Promise<GetPostsResponse> {
 	};
 }
 
-export async function getPostHandler(
-	{
-		postId,
-		userId,
-	}: {
-		userId: string;
-		postId: string;
-	},
-): Promise<GetPostResponse> {
+export async function getPostHandler({
+	postId,
+	userId,
+}: {
+	userId: string;
+	postId: string;
+}): Promise<GetPostResponse> {
 	const post = await db.query.postsSchema.findFirst({
 		where: (postsSchema, { eq }) => eq(postsSchema.id, postId),
 		with: {

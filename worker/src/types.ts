@@ -1,7 +1,7 @@
 import type { env as Env } from "cloudflare:workers";
 import type { Session, User } from "better-auth/types";
-import type pino from "pino";
 import type { Context } from "hono";
+import type pino from "pino";
 
 export type Variables = {
 	user: User;

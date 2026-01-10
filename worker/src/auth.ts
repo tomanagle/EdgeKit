@@ -1,17 +1,16 @@
-
+import { env } from "cloudflare:workers";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import type { Logger } from "./logger";
 import { db } from "./db";
-import { env } from "cloudflare:workers";
+import type { Logger } from "./logger";
 
 const fakeSecret = "Nxcdjj9z+5sM1W9RNya+JttX5tOw30Eb+GUMkXADXWc";
 
-export function createAuth(props: {	logger?: Logger}) {
+export function createAuth(props: { logger?: Logger }) {
 	return betterAuth({
 		database: drizzleAdapter(db, {
 			provider: "sqlite",
-      camelCase: false,
+			camelCase: false,
 		}),
 		...(props.logger && {
 			logger: {
@@ -21,7 +20,11 @@ export function createAuth(props: {	logger?: Logger}) {
 			},
 		}),
 		secret: env.BETTER_AUTH_SECRET || fakeSecret,
-		baseURL: env.FRONTEND_URL,
+		// it's type if function during auth:generate for some reason
+		...(env.FRONTEND_URL &&
+			typeof env.FRONTEND_URL === "string" && {
+				baseURL: env.FRONTEND_URL,
+			}),
 		emailAndPassword: {
 			enabled: true,
 		},

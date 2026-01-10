@@ -5,9 +5,9 @@ import { authMiddleware } from "../../middleware";
 import type { HonoEnv } from "../../types";
 import { createPostBodySchema } from "./posts.schema";
 import {
-  createPostHandler,
-  getPostHandler,
-  getPostsHandler,
+	createPostHandler,
+	getPostHandler,
+	getPostsHandler,
 } from "./posts.service";
 
 export function createPostsRouter({ auth }: { auth: Auth }) {

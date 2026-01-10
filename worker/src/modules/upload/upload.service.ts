@@ -22,8 +22,6 @@ export async function uploadFile({
 	// Use request URL if available, otherwise use FRONTEND_URL (assuming same origin)
 	const baseUrl = env.FRONTEND_URL;
 
-	console.log("baseUrl", baseUrl);
-
 	// Encode the key for URL - slashes need to be encoded
 	// We encode the entire key so slashes become %2F
 	const encodedKey = encodeURIComponent(key);
@@ -35,7 +33,11 @@ export async function uploadFile({
 	};
 }
 
-export async function getFile({	key}: {	key: string }): Promise<Response | null> {
+export async function getFile({
+	key,
+}: {
+	key: string;
+}): Promise<Response | null> {
 	const object = await env.BUCKET.get(key);
 
 	if (!object) {

@@ -4,18 +4,21 @@ import { user } from "./auth-schema";
 
 export * from "./auth-schema";
 
-export const postsSchema = sqliteTable("post", t => ({
+export const postsSchema = sqliteTable("post", (t) => ({
 	id: t.text().primaryKey(),
 	title: t.text().notNull(),
 	body: t.text().notNull(),
 	image: t.text(),
-	author: t.text()
+	author: t
+		.text()
 		.notNull()
 		.references(() => user.id, { onDelete: "cascade" }),
-	createdAt: t.integer({ mode: "timestamp_ms" })
+	createdAt: t
+		.integer({ mode: "timestamp_ms" })
 		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
 		.notNull(),
-	updatedAt: t.integer({ mode: "timestamp_ms" })
+	updatedAt: t
+		.integer({ mode: "timestamp_ms" })
 		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
 		.$onUpdate(() => /* @__PURE__ */ new Date())
 		.notNull(),
@@ -31,13 +34,15 @@ export const postsRelations = relations(postsSchema, ({ one }) => ({
 export const eventTypes = ["Post.Created", "Post.Viewed"] as const;
 export type EventType = (typeof eventTypes)[number];
 
-export const eventSchema = sqliteTable("event", t => ({
+export const eventSchema = sqliteTable("event", (t) => ({
 	id: t.integer({ mode: "number" }).primaryKey({ autoIncrement: true }),
 	type: t.text().notNull().$type<(typeof eventTypes)[number]>(),
-	userId: t.text()
+	userId: t
+		.text()
 		.notNull()
 		.references(() => user.id, { onDelete: "cascade" }),
-	createdAt: t.integer({ mode: "timestamp_ms" })
+	createdAt: t
+		.integer({ mode: "timestamp_ms" })
 		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
 		.notNull(),
 }));

@@ -1,3 +1,4 @@
+import { env } from "cloudflare:workers";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import type pino from "pino";
@@ -9,15 +10,8 @@ import {
 	createUploadRouter,
 } from "./modules/upload/upload.router";
 import type { HonoEnv } from "./types";
-import { env } from "cloudflare:workers";
 
-function createApp({
-	logger,
-	auth,
-}: {
-	logger: pino.Logger;
-	auth: Auth;
-}) {
+function createApp({ logger, auth }: { logger: pino.Logger; auth: Auth }) {
 	const app = new Hono<HonoEnv>();
 
 	app.use("*", requestLogger(logger));
