@@ -11,6 +11,7 @@ export function createAuth(props: {	logger?: Logger}) {
 	return betterAuth({
 		database: drizzleAdapter(db, {
 			provider: "sqlite",
+      camelCase: false,
 		}),
 		...(props.logger && {
 			logger: {
